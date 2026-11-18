@@ -1,0 +1,20 @@
+{
+  "id": "SCN-06",
+  "title": "Trame vitesse corrompue",
+  "description": "Les données de vitesse deviennent incohérentes : le cockpit doit les rejeter au lieu d'afficher une vitesse absurde.",
+  "steps": [
+    {"say": "Scénario 6 : trame vitesse corrompue"},
+    {"label": "Démarrer", "action": "power_on"},
+    {"label": "Engager D", "action": "gear", "value": "D"},
+    {"label": "Accélérer", "action": "accelerator", "value": 0.4},
+    {"label": "Atteindre 40 km/h", "wait_until": {"speed_kmh": [">=", 40]}, "timeout": 15},
+    {"label": "Croisière", "action": "accelerator", "value": 0.12},
+    {"label": "Défaut : la trame ESP_Speed est corrompue", "action": "corrupt", "message": "ESP_Speed"},
+    {"label": "Alerte « Donnée incohérente » en moins de 100 ms", "expect": {"alert": "DATA_INVALID:ESP_Speed"}, "within": 0.1},
+    {"label": "Aucune vitesse absurde n'est retenue", "expect": {"speed_kmh": ["<", 250]}, "during": 2.0},
+    {"label": "La trame est réparée", "action": "repair", "message": "ESP_Speed"},
+    {"label": "La vitesse redevient valide", "expect": {"valid": "ESP_Speed"}, "within": 0.1},
+    {"label": "Freiner jusqu'à l'arrêt", "action": "brake", "value": 0.5},
+    {"label": "Véhicule arrêté", "wait_until": {"speed_kmh": ["==", 0]}, "timeout": 15}
+  ]
+}

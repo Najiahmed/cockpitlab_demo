@@ -1,0 +1,21 @@
+{
+  "id": "SCN-03",
+  "title": "Batterie faible pendant un trajet",
+  "description": "Passage sous le seuil de 15 % en roulant : alerte orange, autonomie cohérente, aucune alerte critique.",
+  "soc_pct": 17,
+  "steps": [
+    {"say": "Scénario 3 : batterie faible pendant un trajet"},
+    {"label": "Démarrer et engager D", "action": "power_on"},
+    {"action": "gear", "value": "D", "label": "Engager D"},
+    {"label": "Accélérer", "action": "accelerator", "value": 0.4},
+    {"label": "Atteindre 60 km/h", "wait_until": {"speed_kmh": [">=", 60]}, "timeout": 20},
+    {"label": "Croisière", "action": "accelerator", "value": 0.15},
+    {"label": "Pas d'alerte batterie à 17 %", "expect": {"no_alert": "LOW_BATTERY"}, "during": 1.0},
+    {"label": "La batterie descend à 14 %", "action": "soc", "value": 14},
+    {"label": "L'alerte batterie faible s'affiche en moins de 1,5 s", "expect": {"alert": "LOW_BATTERY"}, "within": 1.5},
+    {"label": "L'autonomie affichée est inférieure à 50 km", "expect": {"range_km": ["<", 50]}},
+    {"label": "Aucune alerte critique", "expect": {"no_critical": true}, "during": 2.0},
+    {"label": "Freiner jusqu'à l'arrêt", "action": "brake", "value": 0.5},
+    {"label": "Véhicule arrêté", "wait_until": {"speed_kmh": ["==", 0]}, "timeout": 15}
+  ]
+}

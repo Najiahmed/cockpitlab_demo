@@ -1,0 +1,22 @@
+{
+  "id": "SCN-05",
+  "title": "Perte du calculateur ESP en roulant",
+  "description": "Le calculateur ESP cesse d'émettre : la vitesse doit être invalidée (---) en moins de 100 ms, avec une alerte, puis revenir seule.",
+  "steps": [
+    {"say": "Scénario 5 : perte du calculateur ESP en roulant"},
+    {"label": "Démarrer", "action": "power_on"},
+    {"label": "Engager D", "action": "gear", "value": "D"},
+    {"label": "Accélérer", "action": "accelerator", "value": 0.4},
+    {"label": "Atteindre 50 km/h", "wait_until": {"speed_kmh": [">=", 50]}, "timeout": 20},
+    {"label": "Croisière", "action": "accelerator", "value": 0.12},
+    {"label": "Défaut : l'ESP n'émet plus", "action": "mute", "message": "ESP_Speed"},
+    {"label": "Alerte « Communication perdue » en moins de 100 ms", "expect": {"alert": "SIGNAL_LOST:ESP_Speed"}, "within": 0.1},
+    {"label": "La vitesse est invalidée (---)", "expect": {"invalid": "ESP_Speed"}},
+    {"label": "Observer le combiné en mode dégradé", "wait": 3},
+    {"label": "L'ESP émet de nouveau", "action": "unmute", "message": "ESP_Speed"},
+    {"label": "La vitesse redevient valide en moins de 100 ms", "expect": {"valid": "ESP_Speed"}, "within": 0.1},
+    {"label": "L'alerte disparaît", "expect": {"no_alert": "SIGNAL_LOST:ESP_Speed"}, "within": 0.1},
+    {"label": "Freiner jusqu'à l'arrêt", "action": "brake", "value": 0.5},
+    {"label": "Véhicule arrêté", "wait_until": {"speed_kmh": ["==", 0]}, "timeout": 15}
+  ]
+}

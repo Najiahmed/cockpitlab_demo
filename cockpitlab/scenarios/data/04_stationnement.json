@@ -1,0 +1,26 @@
+{
+  "id": "SCN-04",
+  "title": "Manœuvre de stationnement",
+  "description": "La marche arrière est refusée en roulant, puis acceptée à l'arrêt et limitée à 20 km/h.",
+  "steps": [
+    {"say": "Scénario 4 : manœuvre de stationnement"},
+    {"label": "Démarrer", "action": "power_on"},
+    {"label": "Engager D", "action": "gear", "value": "D"},
+    {"label": "Accélérer", "action": "accelerator", "value": 0.4},
+    {"label": "Atteindre 20 km/h", "wait_until": {"speed_kmh": [">=", 20]}, "timeout": 10},
+    {"label": "Demander la marche arrière en roulant", "action": "gear", "value": "R"},
+    {"label": "La demande est refusée", "expect": {"rejected": true}, "within": 0.3},
+    {"label": "Le rapport reste D", "expect": {"gear": "D"}},
+    {"label": "Freiner jusqu'à l'arrêt", "action": "brake", "value": 0.6},
+    {"label": "Véhicule arrêté", "wait_until": {"speed_kmh": ["==", 0]}, "timeout": 10},
+    {"label": "Engager R à l'arrêt", "action": "gear", "value": "R"},
+    {"label": "Le rapport R est affiché", "expect": {"gear": "R"}, "within": 0.3},
+    {"label": "Accélérer à fond en marche arrière", "action": "accelerator", "value": 1.0},
+    {"label": "Laisser la vitesse se stabiliser", "wait": 6},
+    {"label": "Vitesse limitée à 20 km/h", "expect": {"speed_kmh": ["<=", 20.5]}, "during": 2.0},
+    {"label": "Freiner", "action": "brake", "value": 0.6},
+    {"label": "Véhicule arrêté", "wait_until": {"speed_kmh": ["==", 0]}, "timeout": 10},
+    {"label": "Engager P", "action": "gear", "value": "P"},
+    {"label": "Le rapport P est affiché", "expect": {"gear": "P"}, "within": 0.3}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "SCN-07",
+  "title": "Freinage d'urgence sur voie rapide",
+  "description": "Freinage maximal depuis 110 km/h : arrêt en moins de 5 s, feux de détresse, récupération d'énergie.",
+  "steps": [
+    {"say": "Scénario 7 : freinage d'urgence sur voie rapide"},
+    {"label": "Démarrer", "action": "power_on"},
+    {"label": "Engager D", "action": "gear", "value": "D"},
+    {"label": "Accélérer à fond", "action": "accelerator", "value": 1.0},
+    {"label": "Atteindre 110 km/h", "wait_until": {"speed_kmh": [">=", 110]}, "timeout": 25},
+    {"label": "Lever le pied", "action": "release"},
+    {"label": "Récupération d'énergie (puissance négative)", "expect": {"power_kw": ["<", 0]}, "within": 0.3},
+    {"label": "Freinage d'urgence", "action": "brake", "value": 1.0},
+    {"label": "Allumer les feux de détresse", "action": "input", "values": {"hazard": true}},
+    {"label": "Les deux témoins s'allument", "expect": {"left_turn": true}, "within": 0.3},
+    {"label": "Arrêt complet en moins de 5 s", "wait_until": {"speed_kmh": ["==", 0]}, "timeout": 5},
+    {"label": "Aucune alerte critique", "expect": {"no_critical": true}, "during": 1.0}
+  ]
+}

@@ -1,0 +1,4 @@
+PySide6>=6.6
+pytest>=8.0
+# Optionnel : bus CAN virtuel via python-can (python main.py --bus python-can)
+python-can>=4.3

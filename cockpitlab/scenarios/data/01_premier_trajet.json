@@ -1,0 +1,26 @@
+{
+  "id": "SCN-01",
+  "title": "Démarrage et premier trajet",
+  "description": "Parcours nominal : démarrage, accélération jusqu'à 50 km/h, changement de direction, arrêt et coupure du contact.",
+  "steps": [
+    {"say": "Scénario 1 : démarrage et premier trajet"},
+    {"label": "Appuyer sur Démarrer", "action": "power_on"},
+    {"label": "READY s'affiche", "expect": {"ready": true}, "within": 0.5},
+    {"label": "Aucune alerte critique au démarrage", "expect": {"no_critical": true}, "during": 1.0},
+    {"label": "Engager la marche avant", "action": "gear", "value": "D"},
+    {"label": "Le rapport D est affiché", "expect": {"gear": "D"}, "within": 0.3},
+    {"label": "Accélérer", "action": "accelerator", "value": 0.5},
+    {"label": "Atteindre 50 km/h", "wait_until": {"speed_kmh": [">=", 50]}, "timeout": 20},
+    {"label": "Maintenir la vitesse", "action": "accelerator", "value": 0.12},
+    {"label": "Allumer le clignotant droit", "action": "input", "values": {"right_turn": true}},
+    {"label": "Le témoin droit s'allume", "expect": {"right_turn": true}, "within": 0.3},
+    {"label": "Rouler 3 s sans alerte critique", "expect": {"no_critical": true}, "during": 3.0},
+    {"label": "Éteindre le clignotant", "action": "input", "values": {"right_turn": false}},
+    {"label": "Freiner", "action": "brake", "value": 0.4},
+    {"label": "Le véhicule s'arrête", "wait_until": {"speed_kmh": ["==", 0]}, "timeout": 15},
+    {"label": "Engager P", "action": "gear", "value": "P"},
+    {"label": "Relâcher le frein", "action": "release"},
+    {"label": "Couper le contact", "action": "power_off"},
+    {"label": "READY s'éteint", "expect": {"ready": false}, "within": 0.5}
+  ]
+}

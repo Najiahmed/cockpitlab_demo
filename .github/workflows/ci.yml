@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      build:
+        description: "Build à qualifier"
+        default: "26.10.2"
+      campaign:
+        description: "Campagne (sanity, non_regression, endurance, performance, complete)"
+        default: "complete"
+
+jobs:
+  tests:
+    name: Tests unitaires du banc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest python-can
+      - run: python -m compileall -q cockpitlab tests
+      - run: pytest -v
+
+  qualification:
+    name: Qualification de la build
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Campagne
+        run: >
+          python -m cockpitlab.testing
+          --build "${{ github.event.inputs.build || '26.10.2' }}"
+          --campaign "${{ github.event.inputs.campaign || 'complete' }}"
+      - name: Scénarios
+        if: always()
+        run: python -m cockpitlab.scenarios --build "${{ github.event.inputs.build || '26.10.2' }}"
+      - name: Publier les rapports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapports-de-campagne
+          path: reports/

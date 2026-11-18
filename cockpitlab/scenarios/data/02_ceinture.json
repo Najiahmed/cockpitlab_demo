@@ -1,0 +1,19 @@
+{
+  "id": "SCN-02",
+  "title": "Ceinture débouclée en roulant",
+  "description": "L'alerte ceinture doit apparaître au-dessus de 10 km/h et disparaître dès que la ceinture est bouclée.",
+  "steps": [
+    {"say": "Scénario 2 : ceinture débouclée en roulant"},
+    {"label": "Déboucler la ceinture conducteur", "action": "input", "values": {"seatbelt_buckled": false}},
+    {"label": "Démarrer", "action": "power_on"},
+    {"label": "Engager D", "action": "gear", "value": "D"},
+    {"label": "Pas d'alerte ceinture à l'arrêt", "expect": {"no_alert": "SEATBELT"}, "during": 1.5},
+    {"label": "Accélérer doucement", "action": "accelerator", "value": 0.3},
+    {"label": "Dépasser 15 km/h", "wait_until": {"speed_kmh": [">=", 15]}, "timeout": 10},
+    {"label": "L'alerte ceinture s'affiche en moins de 1 s", "expect": {"alert": "SEATBELT"}, "within": 1.0},
+    {"label": "Boucler la ceinture", "action": "input", "values": {"seatbelt_buckled": true}},
+    {"label": "L'alerte disparaît en moins de 1 s", "expect": {"no_alert": "SEATBELT"}, "within": 1.0},
+    {"label": "Freiner jusqu'à l'arrêt", "action": "brake", "value": 0.5},
+    {"label": "Véhicule arrêté", "wait_until": {"speed_kmh": ["==", 0]}, "timeout": 10}
+  ]
+}
