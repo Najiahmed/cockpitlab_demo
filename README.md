@@ -1,6 +1,6 @@
 # CockpitLab
 
-![CI](https://github.com/Najiahmed/cockpitlab/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Najiahmed/cockpitlab_demo/actions/workflows/ci.yml/badge.svg)
 
 **Banc de validation d'un cockpit automobile simulé.**
 Il qualifie des builds logicielles comme une équipe d'intégration : campagnes de
