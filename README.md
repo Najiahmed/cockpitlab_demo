@@ -2,6 +2,8 @@
 
 ![CI](https://github.com/Najiahmed/cockpitlab_demo/actions/workflows/ci.yml/badge.svg)
 
+![Le cockpit et le banc de test](docs/images/cockpitlab.png)
+
 **Banc de validation d'un cockpit automobile simulé.**
 Il qualifie des builds logicielles comme une équipe d'intégration : campagnes de
 tests de sanity et de non-régression, analyse des anomalies avec preuves, et
